@@ -19,7 +19,7 @@ window.cancelRequestAnimFrame = ( function() {
     clearTimeout
 } )();
 
-var globalX;
+var globalY;
 
 var canvas,
       ctx , // Create canvas context
@@ -75,8 +75,8 @@ $(document).ready(function(){
   canvas.height = H;
 
   // Push two new paddles into the paddles[] array
-  paddles.push(new Paddle("bottom"));
-  paddles.push(new Paddle("top"));
+  paddles.push(new Paddle("left"));
+  paddles.push(new Paddle("right"));
 
   // Ball object
   ball = {
@@ -150,19 +150,14 @@ function paintCanvas() {
 // Function for creating paddles
 function Paddle(pos) {
   // Height and width
-  this.h = 5;
-  this.w = 150;
+  this.h = 150;
+  this.w = 5;
   
   // Paddle's position
-  this.x = W/2 - this.w/2;
-  this.y = (pos == "top") ? 0 : H - this.h;
+  this.y = H/2 - this.h/2;
+  this.x = (pos == "left") ? 0 : W - this.w;
   
 }
-
-
-
-
-
 
 
 
@@ -217,12 +212,11 @@ function update() {
   // Move the paddles on mouse move
   if(mouse.x && mouse.y) {
     p = paddles[1];
-    p.x = mouse.x - p.w/2;
-    console.log(p.x);
+    p.y = mouse.y - p.h/2;
+    //console.log(p.y);
   }
 
   p = paddles[2]
-  //p.x = globalX;
   
   // Move the ball
   ball.x += ball.vx;
@@ -309,7 +303,8 @@ function collides(b, p) {
 
 //Do this when collides == true
 function collideAction(ball, p) {
-  ball.vy = -ball.vy;
+  console.log("**collision**")
+  ball.vx = -ball.vx;
   
   if(paddleHit == 1) {
     ball.y = p.y - p.h;
@@ -457,9 +452,9 @@ Leap.loop(controllerOptions, function(frame) {
   var pointableString = "";
   if (frame.pointables.length > 0) {
     mainPointable = frame.pointables[0]
-    console.log("main pointer: ")
-    console.log(mainPointable.tipVelocity[0]/100 + ", " + mainPointable.tipVelocity[1]/100);
-    movePaddle(mainPointable.tipVelocity[0]/20);
+    //console.log("main pointer: ")
+    //console.log(mainPointable.tipVelocity[0]/100 + ", " + mainPointable.tipVelocity[1]/100);
+    movePaddle(mainPointable.tipVelocity[1]/20);
 
   }
   
@@ -471,20 +466,19 @@ Leap.loop(controllerOptions, function(frame) {
 
 });
 
-function movePaddle(x){
+function movePaddle(y){
   var p2 = paddles[2];
   //var x=event.clientX;
   //var y=event.clientY;
   //console.log("X coords: " + x + ", Y coords: " + y);
-  if(x){
-    var oldx = p.x;
+  if(y){
+    var oldy = p2.y;
 
-    if(oldx+x > 0 && oldx+x < W){
-      globalX = oldx+x;
-      //globalX = 100;
-      p2.x = globalX;
+    if(oldy-y > 0 && oldy-y < H){
+      globalY = oldy-y;
+      p2.y = globalY;
     }
-    console.log("p.x: ");
-    console.log(p.x)
+    //console.log("p.y: ");
+    //console.log(p.y)
   }
 }
