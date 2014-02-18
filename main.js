@@ -19,38 +19,127 @@ window.cancelRequestAnimFrame = ( function() {
     clearTimeout
 } )();
 
+var globalX;
 
-// Initialize canvas and required variables
-var canvas = document.getElementById("canvas"),
-    ctx = canvas.getContext("2d"), // Create canvas context
-    W = window.innerWidth, // Window's width
-    H = window.innerHeight, // Window's height
-    particles = [], // Array containing particles
-    ball = {}, // Ball object
-    paddles = [2], // Array containing two paddles
-    mouse = {}, // Mouse object to store it's current position
-    points = 0, // Varialbe to store points
-    fps = 60, // Max FPS (frames per second)
-    particlesCount = 20, // Number of sparks when ball strikes the paddle
-    flag = 0, // Flag variable which is changed on collision
-    particlePos = {}, // Object to contain the position of collision 
-    multipler = 1, // Varialbe to control the direction of sparks
-    startBtn = {}, // Start button object
-    restartBtn = {}, // Restart button object
-    over = 0, // flag varialbe, cahnged when the game is over
-    init, // variable to initialize animation
-    paddleHit;
+var canvas,
+      ctx , // Create canvas context
+      W , // Window's width
+      H , // Window's height
+      particles, // Array containing particles
+      ball , // Ball object
+      paddles , // Array containing two paddles
+      mouse, // Mouse object to store it's current position
+      points , // Varialbe to store points
+      fps , // Max FPS (frames per second)
+      particlesCount, // Number of sparks when ball strikes the paddle
+      flag , // Flag variable which is changed on collision
+      particlePos, // Object to contain the position of collision 
+      multipler , // Varialbe to control the direction of sparks
+      startBtn , // Start button object
+      restartBtn, // Restart button object
+      over , // flag varialbe, cahnged when the game is over
+      init, // variable to initialize animation
+      paddleHit;
 
-// Add mousemove and mousedown events to the canvas
-canvas.addEventListener("mousemove", trackPosition, true);
-canvas.addEventListener("mousedown", btnClick, true);
+$(document).ready(function(){
+  // Initialize canvas and required variables
+      canvas = document.getElementById("canvas"),
+      ctx = canvas.getContext("2d"), // Create canvas context
+      W = window.innerWidth, // Window's width
+      H = window.innerHeight, // Window's height
+      particles = [], // Array containing particles
+      ball = {}, // Ball object
+      paddles = [2], // Array containing two paddles
+      mouse = {}, // Mouse object to store it's current position
+      points = 0, // Varialbe to store points
+      fps = 60, // Max FPS (frames per second)
+      particlesCount = 20, // Number of sparks when ball strikes the paddle
+      flag = 0, // Flag variable which is changed on collision
+      particlePos = {}, // Object to contain the position of collision 
+      multipler = 1, // Varialbe to control the direction of sparks
+      startBtn = {}, // Start button object
+      restartBtn = {}, // Restart button object
+      over = 0, // flag varialbe, cahnged when the game is over
+      init, // variable to initialize animation
+      paddleHit;
 
-// Initialise the collision sound
-collision = document.getElementById("collide");
+  // Add mousemove and mousedown events to the canvas
+  canvas.addEventListener("mousemove", trackPosition, true);
+  canvas.addEventListener("mousedown", btnClick, true);
 
-// Set the canvas's height and width to full screen
-canvas.width = W;
-canvas.height = H;
+  // Initialise the collision sound
+  collision = document.getElementById("collide");
+
+  // Set the canvas's height and width to full screen
+  canvas.width = W;
+  canvas.height = H;
+
+  // Push two new paddles into the paddles[] array
+  paddles.push(new Paddle("bottom"));
+  paddles.push(new Paddle("top"));
+
+  // Ball object
+  ball = {
+    x: 50,
+    y: 50, 
+    r: 5,
+    c: "white",
+    vx: 4,
+    vy: 8,
+    
+    // Function for drawing ball on canvas
+    draw: function() {
+      ctx.beginPath();
+      ctx.fillStyle = this.c;
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI*2, false);
+      ctx.fill();
+    }
+  };
+
+  // Start Button object
+  startBtn = {
+    w: 100,
+    h: 50,
+    x: W/2 - 50,
+    y: H/2 - 25,
+    
+    draw: function() {
+      ctx.strokeStyle = "white";
+      ctx.lineWidth = "2";
+      ctx.strokeRect(this.x, this.y, this.w, this.h);
+      
+      ctx.font = "18px Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStlye = "white";
+      ctx.fillText("Start", W/2, H/2 );
+    }
+  };
+
+  // Restart Button object
+  restartBtn = {
+    w: 100,
+    h: 50,
+    x: W/2 - 50,
+    y: H/2 - 50,
+    
+    draw: function() {
+      ctx.strokeStyle = "white";
+      ctx.lineWidth = "2";
+      ctx.strokeRect(this.x, this.y, this.w, this.h);
+      
+      ctx.font = "18px Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStlye = "white";
+      ctx.fillText("Restart", W/2, H/2 - 25 );
+    }
+  };
+
+  // Show the start screen
+  startScreen();
+
+});
 
 // Function to paint canvas
 function paintCanvas() {
@@ -70,68 +159,12 @@ function Paddle(pos) {
   
 }
 
-// Push two new paddles into the paddles[] array
-paddles.push(new Paddle("bottom"));
-paddles.push(new Paddle("top"));
-
-// Ball object
-ball = {
-  x: 50,
-  y: 50, 
-  r: 5,
-  c: "white",
-  vx: 4,
-  vy: 8,
-  
-  // Function for drawing ball on canvas
-  draw: function() {
-    ctx.beginPath();
-    ctx.fillStyle = this.c;
-    ctx.arc(this.x, this.y, this.r, 0, Math.PI*2, false);
-    ctx.fill();
-  }
-};
 
 
-// Start Button object
-startBtn = {
-  w: 100,
-  h: 50,
-  x: W/2 - 50,
-  y: H/2 - 25,
-  
-  draw: function() {
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = "2";
-    ctx.strokeRect(this.x, this.y, this.w, this.h);
-    
-    ctx.font = "18px Arial, sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillStlye = "white";
-    ctx.fillText("Start", W/2, H/2 );
-  }
-};
 
-// Restart Button object
-restartBtn = {
-  w: 100,
-  h: 50,
-  x: W/2 - 50,
-  y: H/2 - 50,
-  
-  draw: function() {
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = "2";
-    ctx.strokeRect(this.x, this.y, this.w, this.h);
-    
-    ctx.font = "18px Arial, sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillStlye = "white";
-    ctx.fillText("Restart", W/2, H/2 - 25 );
-  }
-};
+
+
+
 
 // Function for creating particles object
 function createParticles(x, y, m) {
@@ -183,11 +216,13 @@ function update() {
   
   // Move the paddles on mouse move
   if(mouse.x && mouse.y) {
-    for(var i = 1; i < paddles.length; i++) {
-      p = paddles[i];
-      p.x = mouse.x - p.w/2;
-    }   
+    p = paddles[1];
+    p.x = mouse.x - p.w/2;
+    console.log(p.x);
   }
+
+  p = paddles[2]
+  //p.x = globalX;
   
   // Move the ball
   ball.x += ball.vx;
@@ -342,13 +377,13 @@ function gameOver() {
   ctx.fillText("Game Over - You scored "+points+" points!", W/2, H/2 + 25 );
   
   // Stop the Animation
-  cancelRequestAnimFrame(init);
+  //cancelRequestAnimFrame(init);
   
   // Set the over flag
   over = 1;
   
   // Show the restart button
-  restartBtn.draw();
+  //restartBtn.draw();
 }
 
 // Function for running the whole animation
@@ -393,5 +428,63 @@ function btnClick(e) {
   }
 }
 
-// Show the start screen
-startScreen();
+
+
+var controllerOptions = {enableGestures: true};
+var previousFrame = null;
+
+Leap.loop(controllerOptions, function(frame) {
+
+
+
+
+
+  // Frame motion factors
+  if (previousFrame && previousFrame.valid) {
+    var translation = frame.translation(previousFrame);
+
+    var rotationAxis = frame.rotationAxis(previousFrame);
+    var rotationAngle = frame.rotationAngle(previousFrame);
+
+    var scaleFactor = frame.scaleFactor(previousFrame);
+  }
+
+  
+ 
+
+  // Display Pointable (finger and tool) object data
+  var pointableOutput = document.getElementById("pointableData");
+  var pointableString = "";
+  if (frame.pointables.length > 0) {
+    mainPointable = frame.pointables[0]
+    console.log("main pointer: ")
+    console.log(mainPointable.tipVelocity[0]/100 + ", " + mainPointable.tipVelocity[1]/100);
+    movePaddle(mainPointable.tipVelocity[0]/20);
+
+  }
+  
+
+ 
+
+  // Store frame for motion functions
+  previousFrame = frame;
+
+});
+
+function movePaddle(x){
+  var p2 = paddles[2];
+  //var x=event.clientX;
+  //var y=event.clientY;
+  //console.log("X coords: " + x + ", Y coords: " + y);
+  if(x){
+    var oldx = p.x;
+
+    if(oldx+x > 0 && oldx+x < W){
+      globalX = oldx+x;
+      //globalX = 100;
+      p2.x = globalX;
+    }
+    console.log("p.x: ");
+    console.log(p.x)
+  }
+}
