@@ -85,7 +85,7 @@ $(document).ready(function(){
     r: 5,
     c: "red",
     vx: 4,
-    vy: 8,
+    vy: 4,
     
     // Function for drawing ball on canvas
     draw: function() {
@@ -139,7 +139,11 @@ $(document).ready(function(){
   // Show the start screen
   startScreen();
 
-});
+  $("#detected").css("color","red");
+  $("#detected").text("Leap not detected")
+  $("#detected").show();
+
+});// end of $(document).ready(..)
 
 // Function to paint canvas
 function paintCanvas() {
@@ -211,7 +215,7 @@ function update() {
   // Move the paddles on mouse move
   if(mouse.x && mouse.y) {
     p = paddles[1];
-    p.y = mouse.y - p.h/2;
+    p.y = mouse.y - p.h/2 - $("#canvas").offset().top;
     //console.log(p.y);
   }
 
@@ -418,7 +422,7 @@ function btnClick(e) {
       ball.y = 20;
       points = 0;
       ball.vx = 4;
-      ball.vy = 8;
+      ball.vy = 4;
       animloop();
       
       over = 0;
@@ -426,14 +430,25 @@ function btnClick(e) {
   }
 }
 
+var x =0;
 
 
 var controllerOptions = {enableGestures: true};
 var previousFrame = null;
 
+
 Leap.loop(controllerOptions, function(frame) {
 
+  if(x==0){
+    if(frame){
+      console.log("leap detected");
+      $("#detected").css("color","green");
+      $("#detected").text("Leap detected")
+      $("#detected").show()
+    }
+  }
 
+  x++;
 
 
 

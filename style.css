@@ -4,6 +4,19 @@
 	border-style:solid;
 	border-width:5px;
 	border-radius: 10px;
-	margin: 40px;
+	margin-top: 40px;
 	
+}
+
+#detected{
+	color : green;
+	display : none;
+}
+
+#detected-wrapper{
+	height : 20px;
+}
+
+#header{
+	font-size: 45pt;
 }
