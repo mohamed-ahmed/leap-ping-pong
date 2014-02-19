@@ -83,7 +83,7 @@ $(document).ready(function(){
     x: W/2,
     y: H/2, 
     r: 5,
-    c: "white",
+    c: "red",
     vx: 4,
     vy: 8,
     
@@ -101,18 +101,18 @@ $(document).ready(function(){
     w: 100,
     h: 50,
     x: W/2 - 50,
-    y: H/2 - 25,
+    y: H/2 - 125,
     
     draw: function() {
-      ctx.strokeStyle = "white";
+      ctx.strokeStyle = "red";
       ctx.lineWidth = "2";
       ctx.strokeRect(this.x, this.y, this.w, this.h);
       
       ctx.font = "18px Arial, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillStlye = "white";
-      ctx.fillText("Start", W/2, H/2 );
+      ctx.fillStlye = "red";
+      ctx.fillText("Start", W/2, H/2 - 100 );
     }
   };
 
@@ -124,14 +124,14 @@ $(document).ready(function(){
     y: H/2 - 50,
     
     draw: function() {
-      ctx.strokeStyle = "white";
+      ctx.strokeStyle = "red";
       ctx.lineWidth = "2";
       ctx.strokeRect(this.x, this.y, this.w, this.h);
       
       ctx.font = "18px Arial, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillStlye = "white";
+      ctx.fillStlye = "red";
       ctx.fillText("Restart", W/2, H/2 - 25 );
     }
   };
@@ -143,7 +143,7 @@ $(document).ready(function(){
 
 // Function to paint canvas
 function paintCanvas() {
-  ctx.fillStyle = "black";
+  ctx.fillStyle = "white";
   ctx.fillRect(0, 0, W, H);
 }
 
@@ -152,7 +152,6 @@ function Paddle(pos) {
   // Height and width
   this.h = 150;
   this.w = 10;
-  
   // Paddle's position
   this.y = H/2 - this.h/2;
   this.x = (pos == "left") ? 0 : W - this.w;
@@ -178,7 +177,7 @@ function draw() {
   for(var i = 0; i < paddles.length; i++) {
     p = paddles[i];
     
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "black";
     ctx.fillRect(p.x, p.y, p.w, p.h);
   }
   
@@ -287,7 +286,6 @@ function update() {
 //the paddles
 function collides(b, p) {
   if(b.y + ball.r >= p.y && b.y - ball.r <=p.y + p.h) { //a collision took place
-    console.log("a collision took place")
     if(b.x >= (p.x - p.w) && p.x > 0){
       paddleHit = 1;
       console.log("paddleHit 1");
@@ -342,7 +340,7 @@ function emitParticles() {
     par = particles[j];
     
     ctx.beginPath(); 
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "black";
     if (par.radius > 0) {
       ctx.arc(par.x, par.y, par.radius, 0, Math.PI*2, false);
     }
@@ -359,7 +357,7 @@ function emitParticles() {
 
 // Function for updating score
 function updateScore() {
-  ctx.fillStlye = "white";
+  ctx.fillStlye = "black";
   ctx.font = "16px Arial, sans-serif";
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
@@ -368,7 +366,7 @@ function updateScore() {
 
 // Function to run when the game overs
 function gameOver() {
-  ctx.fillStlye = "white";
+  ctx.fillStlye = "black";
   ctx.font = "20px Arial, sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
