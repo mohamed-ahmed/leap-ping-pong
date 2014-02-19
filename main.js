@@ -80,8 +80,8 @@ $(document).ready(function(){
 
   // Ball object
   ball = {
-    x: 50,
-    y: 50, 
+    x: W/2,
+    y: H/2, 
     r: 5,
     c: "white",
     vx: 4,
@@ -242,28 +242,28 @@ function update() {
   } 
   
   else {
-    // Collide with walls, If the ball hits the top/bottom,
+    // Collide with walls, If the ball hits the left/right,
     // walls, run gameOver() function
-    if(ball.y + ball.r > H) {
-      ball.y = H - ball.r;
+    if(ball.x + ball.r > W) {
+      ball.x = W - ball.r;
       gameOver();
     } 
     
-    else if(ball.y < 0) {
-      ball.y = ball.r;
+    else if(ball.x < 0) {
+      ball.x = ball.r;
       gameOver();
     }
     
-    // If ball strikes the vertical walls, invert the 
-    // x-velocity vector of ball
-    if(ball.x + ball.r > W) {
-      ball.vx = -ball.vx;
-      ball.x = W - ball.r;
+    // If ball strikes the horizontal walls, invert the 
+    // y-velocity vector of ball
+    if(ball.y + ball.r > H) {
+      ball.vy = -ball.vy;
+      ball.y = H - ball.r;
     }
     
-    else if(ball.x -ball.r < 0) {
-      ball.vx = -ball.vx;
-      ball.x = ball.r;
+    else if(ball.y - ball.r < 0) {
+      ball.vy = -ball.vy;
+      ball.y = ball.r;
     }
   }
   
@@ -286,14 +286,17 @@ function update() {
 //Function to check collision between ball and one of
 //the paddles
 function collides(b, p) {
-  if(b.x + ball.r >= p.x && b.x - ball.r <=p.x + p.w) {
-    if(b.y >= (p.y - p.h) && p.y > 0){
+  if(b.y + ball.r >= p.y && b.y - ball.r <=p.y + p.h) { //a collision took place
+    console.log("a collision took place")
+    if(b.x >= (p.x - p.w) && p.x > 0){
       paddleHit = 1;
+      console.log("paddleHit 1");
       return true;
     }
     
-    else if(b.y <= p.h && p.y == 0) {
+    else if(b.x <= p.w && p.x == 0) {
       paddleHit = 2;
+      console.log("paddleHit 2");
       return true;
     }
     
@@ -307,14 +310,14 @@ function collideAction(ball, p) {
   ball.vx = -ball.vx;
   
   if(paddleHit == 1) {
-    ball.y = p.y - p.h;
-    particlePos.y = ball.y + ball.r;
+    ball.x = p.x - p.w;
+    particlePos.x = ball.x + ball.r;
     multiplier = -1;  
   }
   
   else if(paddleHit == 2) {
-    ball.y = p.h + ball.r;
-    particlePos.y = ball.y - ball.r;
+    ball.x = p.w + ball.r;
+    particlePos.x = ball.x - ball.r;
     multiplier = 1; 
   }
   
@@ -372,13 +375,13 @@ function gameOver() {
   ctx.fillText("Game Over - You scored "+points+" points!", W/2, H/2 + 25 );
   
   // Stop the Animation
-  //cancelRequestAnimFrame(init);
+  cancelRequestAnimFrame(init);
   
   // Set the over flag
   over = 1;
   
   // Show the restart button
-  //restartBtn.draw();
+  restartBtn.draw();
 }
 
 // Function for running the whole animation
