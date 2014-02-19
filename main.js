@@ -151,7 +151,7 @@ function paintCanvas() {
 function Paddle(pos) {
   // Height and width
   this.h = 150;
-  this.w = 5;
+  this.w = 10;
   
   // Paddle's position
   this.y = H/2 - this.h/2;
@@ -325,8 +325,8 @@ function collideAction(ball, p) {
   increaseSpd();
   
   if(collision) {
-    if(points > 0) 
-      collision.pause();
+    //if(points > 0) 
+    //  collision.pause();
     
     collision.currentTime = 0;
     collision.play();
