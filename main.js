@@ -45,8 +45,8 @@ $(document).ready(function(){
   // Initialize canvas and required variables
       canvas = document.getElementById("canvas"),
       ctx = canvas.getContext("2d"), // Create canvas context
-      W = window.innerWidth, // Window's width
-      H = window.innerHeight, // Window's height
+      W = $("#canvas").width(), // Window's width
+      H = $("#canvas").height(), // Window's height
       particles = [], // Array containing particles
       ball = {}, // Ball object
       paddles = [2], // Array containing two paddles
@@ -398,8 +398,8 @@ function startScreen() {
 function btnClick(e) {
   
   // Variables for storing mouse position on click
-  var mx = e.pageX,
-      my = e.pageY;
+  var mx = e.pageX - $("#canvas").offset().left,
+      my = e.pageY - $("#canvas").offset().right;
   
   // Click start button
   if(mx >= startBtn.x && mx <= startBtn.x + startBtn.w) {
