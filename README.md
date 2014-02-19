@@ -3,6 +3,8 @@ Leap-Pong
 
 An HTML5 in browser ping pong game which supports the Leap Motion sensor
 
+![](http://i.imgur.com/hHONLVI.png)
+
 To run:
 
 1. Clone
