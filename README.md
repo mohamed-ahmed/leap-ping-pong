@@ -1,4 +1,4 @@
-leap-ping-pong
+Leap-Pong
 ==============
 
 An HTML5 in browser ping pong game which supports the Leap Motion sensor
