@@ -84,8 +84,8 @@ $(document).ready(function(){
     y: H/2, 
     r: 5,
     c: "red",
-    vx: 4,
-    vy: 4,
+    vx: 6,
+    vy: 6,
     
     // Function for drawing ball on canvas
     draw: function() {
@@ -140,7 +140,7 @@ $(document).ready(function(){
   startScreen();
 
   $("#detected").css("color","red");
-  $("#detected").text("Leap not detected")
+  $("#detected").text("Leap sensor not detected")
   $("#detected").show();
 
 });// end of $(document).ready(..)
@@ -424,8 +424,8 @@ function btnClick(e) {
       ball.x = 20;
       ball.y = 20;
       points = 0;
-      ball.vx = 4;
-      ball.vy = 4;
+      ball.vx = 6;
+      ball.vy = 6;
       animloop();
       
       over = 0;
@@ -444,7 +444,7 @@ Leap.loop(controllerOptions, function(frame) {
 
   if(x==0){
     if(frame){
-      console.log("leap detected");
+      console.log("Leap sensor detected");
       $("#detected").css("color","green");
       $("#detected").text("Leap detected")
       $("#detected").show()
