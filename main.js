@@ -327,7 +327,9 @@ function collideAction(ball, p) {
     //  collision.pause();
     
     collision.currentTime = 0;
+    collision.src = "hit.mp3";
     collision.play();
+
   }
   
   particlePos.x = ball.x;
