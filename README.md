@@ -3,7 +3,15 @@ Leap-Pong
 
 An HTML5 in browser pong game which supports the Leap Motion sensor
 
+
+---------------------------------------
+
+screenshot:
+
 ![](http://i.imgur.com/hHONLVI.png)
+
+---------------------------------------
+
 
 To run:
 
