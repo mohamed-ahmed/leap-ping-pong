@@ -1,7 +1,7 @@
 Leap-Pong
 ==============
 
-An HTML5 in browser ping pong game which supports the Leap Motion sensor
+An HTML5 in browser pong game which supports the Leap Motion sensor
 
 ![](http://i.imgur.com/hHONLVI.png)
 
