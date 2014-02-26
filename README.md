@@ -19,3 +19,7 @@ To run:
 2. Connect Leap motion sensor
 3. Open index.html in browser
 4. Play
+
+To play:
+
+Mouse controls left paddle, leap sensor controls right paddle 
