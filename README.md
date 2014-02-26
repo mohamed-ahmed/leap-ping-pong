@@ -24,7 +24,3 @@ To play:
 
 Mouse controls left paddle, leap sensor controls right paddle 
 
-
-Demo:
-
-<iframe width="420" height="315" src="//www.youtube.com/embed/E1-gVu7A-C0" frameborder="0" allowfullscreen></iframe>
